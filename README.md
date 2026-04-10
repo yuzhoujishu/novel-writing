@@ -27,73 +27,105 @@
 
 - **Claude Code** 已安装并认证
 - **Node.js** 16+（用于运行 `scripts/lib/` 下的工具脚本）
-- 已有一个 Claude Code 项目目录（插件加载时会创建 `data/` 目录）
 
-### 步骤 1：安装插件
+### 手动安装
 
-通过 Claude Code 插件市场安装：
+#### 步骤 1：准备插件目录
+
+将插件克隆或复制到本地任意目录。建议放在一个固定位置，避免后续移动：
 
 ```bash
-# 在 Claude Code 中执行
-/plugin install novel-writing
+# 方式 A：克隆仓库
+git clone https://github.com/你的用户名/novel-writing.git D:\DATA\github\novel-writing
+
+# 方式 B：直接将文件夹复制到目标路径
 ```
 
-### 步骤 2：启用插件
+> **注意**：插件目录路径中最好不要包含中文或空格，如果路径含空格需要用引号包裹（如 `"D:\我的项目\novel-writing"`）。
 
-编辑 `~/.claude/settings.json`，在 `enabledPlugins` 中添加：
+#### 步骤 2：找到并编辑 settings.json
+
+Claude Code 的配置文件位于用户主目录：
+
+```
+# Windows
+C:\Users\<你的用户名>\.claude\settings.json
+
+# macOS / Linux
+~/.claude/settings.json
+```
+
+**如果文件不存在**，需要手动创建。打开终端执行：
+
+```bash
+# Windows PowerShell
+New-Item -Path "$env:USERPROFILE\.claude\settings.json" -ItemType File
+
+# macOS / Linux
+touch ~/.claude/settings.json
+```
+
+**如果文件存在但没有 `plugins` 字段**，用任意文本编辑器打开，添加 `plugins` 节点：
 
 ```json
-"enabledPlugins": {
-  "minimax-skills@minimax-skills": true,
-  "ecc@ecc": true,
-  "novel-writing@novel-writing": true
+{
+  // 保留文件中已有的其他配置...
+  "plugins": {
+    "novel-writing": {
+      "path": "D:\\DATA\\github\\novel-writing"
+    }
+  }
 }
 ```
 
-> **注意**：如果 `enabledPlugins` 字段不存在，手动添加到 settings.json 根级别。
+> **Windows 路径格式**：在 JSON 中使用反斜杠 `\\` 转义，或使用正斜杠 `/`（更稳定）。例如 `D:/DATA/github/novel-writing`。
 
-### 步骤 3：重启 Claude Code
+#### 步骤 3：重启 Claude Code
 
-插件配置更改后需要重启 Claude Code 才能加载技能。
+关闭当前 Claude Code 窗口，重新启动让插件加载生效。
 
-### 步骤 4：验证安装
+#### 步骤 4：安装依赖
 
-重启后执行任意技能命令验证：
-
-```
-/outline  /chapter  /character  /world  /beat  /edit  /auto
-```
-
-### 更新插件
-
-**方式一：自动更新（推荐）**
+插件脚本依赖 `uuid` 模块，需要在插件根目录安装：
 
 ```bash
-# 在 Claude Code 中执行
-/plugin update novel-writing
-
-# 更新后重启 Claude Code 使更改生效
+cd D:\DATA\github\novel-writing
+npm install uuid
 ```
 
-**方式二：手动更新**
+#### 步骤 5：验证安装
 
-当自动更新不可用时，可手动覆盖插件目录：
+启动 Claude Code 后输入以下命令，确认无报错即为安装成功：
 
-```bash
-# 1. 找到插件目录
-# 路径格式: C:\Users\<用户名>\.claude\plugins\cache\novel-writing\novel-writing\<版本号>\
-
-# 2. 用新版文件覆盖以下目录：
-#   - skills/     (技能文件)
-#   - agents/     (Agent 配置文件)
-#   - hooks/      (Hook 配置)
-#   - scripts/    (工具脚本)
-#   - README.md   (如有更新)
-
-# 3. 重启 Claude Code
+```
+/outline
+/chapter
+/character
+/world
+/beat
+/edit
+/auto
 ```
 
-> **提示**：可以通过 `C:\Users\Administrator\.claude\plugins\installed_plugins.json` 找到插件实际安装路径。
+出现技能描述而非 "unknown command" 即表示插件正常加载。
+
+#### 常见问题
+
+**Q: settings.json 中的 `plugins` 字段不生效？**
+
+确认 JSON 格式正确——缺少逗号、引号不匹配是常见错误。可用在线 JSON 校验工具验证。
+
+**Q: 提示 `Cannot find module 'uuid'`？**
+
+执行步骤 4 的 `npm install uuid`，确保在插件根目录下运行。
+
+**Q: 多工作区如何配置？**
+
+插件支持工作区级别的 `settings.json`。在工作区根目录创建 `settings.json` 并配置 `plugins`，该配置仅在当前工作区生效，覆盖用户级配置。
+
+**Q: 如何确认插件实际加载了哪些 Skill？**
+
+在 Claude Code 中输入 `/` 查看斜杠命令菜单，列出的命令中包含 `outline`、`chapter`、`character` 等即为成功。
 
 ### 初始化项目
 
