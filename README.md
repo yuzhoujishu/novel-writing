@@ -151,6 +151,39 @@ node scripts/lib/state-manager.js load <project-id>
 → 写完后自动更新所有状态文件
 ```
 
+### 快速 MVP（极简模式）
+
+一条命令即可完成小说写作全流程：
+
+```bash
+# 1. 创建项目
+node scripts/lib/state-manager.js create "我的小说"
+
+# 2. 加载项目
+node scripts/lib/state-manager.js load <project-id>
+
+# 3. 在 Claude Code 中直接执行自动写作
+/auto 生成一部仙侠小说 总章数50章
+```
+
+**自动完成以下步骤**：
+1. 检测 world.json 是否存在 → 不存在则自动创建
+2. 检测 characters.json 是否存在 → 不存在则自动创建
+3. 检测 outline.json 是否存在 → 不存在则根据参数自动生成大纲
+4. 循环执行 `/auto --batch=5` 直至完成目标章节数
+
+**循环写作**（每次生成5章）：
+```
+/auto --batch=5
+→ 自动续写后续章节，无需手动指定
+→ 循环直到完成目标
+```
+
+**验证进度**：
+```
+node scripts/lib/state-manager.js meta <project-id>
+```
+
 ---
 
 ## 完整技能参考

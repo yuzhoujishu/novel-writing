@@ -41,7 +41,24 @@ If no project exists, abort with: "No active project. Create one with `node scri
 node scripts/lib/state-manager.js load {projectId}
 ```
 
-If `outline.json` has zero chapters (`outline.chapters.length === 0`), abort with: "No outline found. Run `/novel:outline` first."
+#### Step 1c: Auto-Setup if Missing
+
+Check and auto-create missing files in `data/{projectId}/`:
+
+1. **If `world.json` missing:**
+   - Auto-create with basic template based on genre from `meta.json`
+   - Default: 2-3 locations, 1-2 factions
+
+2. **If `characters.json` missing:**
+   - Auto-create with protagonist and 1-2 supporting characters
+   - Auto-generate names and basic profiles
+
+3. **If `outline.json` has zero chapters:**
+   - If user provided story premise in arguments (e.g., "生成一部仙侠小说 总章数50章"):
+     - Extract genre from arguments (仙侠 → xianxia, 奇幻 → fantasy, etc.)
+     - Extract chapter count from arguments (50)
+     - Auto-generate complete outline with 50 chapters in three-act structure
+   - Else abort with: "No outline found. Run `/outline` first or include story premise in arguments."
 
 #### Step 1c: Determine Batch Scope
 
