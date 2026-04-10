@@ -1,0 +1,58 @@
+{
+  "PreToolUse": [
+    {
+      "matcher": "Write|Edit.*chapters/",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node scripts/lib/hooks/pre-chapter-chinese-count.js",
+          "timeout": 10
+        }
+      ]
+    },
+    {
+      "matcher": "Bash.*state-manager",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node scripts/lib/hooks/pre-batch-verify.js",
+          "timeout": 10
+        }
+      ]
+    }
+  ],
+  "PostToolUse": [
+    {
+      "matcher": "Write.*chapters/\\d+\\.md",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node scripts/lib/hooks/post-chapter-state-update.js",
+          "timeout": 10
+        }
+      ]
+    },
+    {
+      "matcher": "Write|Edit.*\\.md",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node scripts/lib/hooks/post-markdown-format.js",
+          "timeout": 10
+        }
+      ]
+    }
+  ],
+  "Stop": [
+    {
+      "matcher": ".*",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node scripts/lib/hooks/stop-state-sync.js",
+          "timeout": 5
+        }
+      ]
+    }
+  ]
+}

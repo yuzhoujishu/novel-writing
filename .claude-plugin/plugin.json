@@ -1,0 +1,32 @@
+{
+  "name": "novel-writing",
+  "version": "1.0.0",
+  "description": "Claude Code 小说写作插件 — 自主批次写作闭环，支持大纲、章节、角色、世界观、节拍表、风格保留修订，配合交叉引用的知识图谱实现全程一致性管理",
+  "author": {
+    "name": "Yuzhou",
+    "email": "yuzhou7777@qq.com"
+  },
+  "homepage": "https://gitee.com/Yuzhou7777/novel-writing",
+  "repository": "https://gitee.com/Yuzhou7777/novel-writing",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "novel-writing",
+    "creative-writing",
+    "agents",
+    "skills",
+    "hooks",
+    "knowledge-graph",
+    "state-management",
+    "batch-writing"
+  ],
+  "agents": [
+    "./agents/project-manager.md",
+    "./agents/creative-consultant.md",
+    "./agents/style-keeper.md"
+  ],
+  "skills": [
+    "./skills/"
+  ],
+  "commands": []
+}
